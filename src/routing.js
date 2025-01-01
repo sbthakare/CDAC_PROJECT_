@@ -12,6 +12,9 @@ import StudentDashboard from "./components/Student/StudentDashboard";
 import ForgetPassword from "./components/ForgetPassword";
 import AdminDashboard from "./components/company/AdminDashboard";
 import EmployeeDashboard from "./components/Employee/EmployeeDashboard";
+import About from "./About ";
+import Contact from "./Contact";
+import JobDetails from "./JobDetails";
 
 
 
@@ -34,6 +37,15 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "aboutpage",
+        element: <About />,
+      },
+      {
+        path: "contactpage",
+        element: <Contact />,
+      },
+      
+      {
         path: "loginpage",
         element: <Login />,
       },
@@ -46,7 +58,10 @@ const router = createBrowserRouter([
         path: "forgotpasswordpage",
         element: <ForgetPassword/>,
       },
-      
+      {
+        path: "jobdetails",
+        element: <JobDetails/>,
+      },
       {
         path: "studentpage",
         element: <StudentDashboard/>,

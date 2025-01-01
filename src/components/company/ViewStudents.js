@@ -56,7 +56,7 @@ const ViewStudents = () => {
 
   return (
     <div className="section container mt-4">
-      <h2>View Students</h2>
+      <h2>Find the Matches Candidate </h2>
 
       {/* Candidate Search */}
       <div className="candidate-search mb-4">

@@ -1,112 +1,124 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const PostJob = ({ onPostJob }) => {
+const PostJob = () => {
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [requiredSkills, setRequiredSkills] = useState("");
   const [salary, setSalary] = useState("");
-  const [errors, setErrors] = useState({
-    jobTitle: "",
-    jobDescription: "",
-    requiredSkills: "",
-    salary: "",
-  });
 
-  const validateForm = () => {
-    const newErrors = {
-      jobTitle: jobTitle ? "" : "Job Title is required.",
-      jobDescription: jobDescription ? "" : "Job Description is required.",
-      requiredSkills: requiredSkills ? "" : "Required Skills are required.",
-      salary: salary ? "" : "Salary is required.",
-    };
-    setErrors(newErrors);
-    return Object.values(newErrors).every((error) => error === "");
-  };
-
-  const postJob = () => {
-    if (!validateForm()) {
-      return; // Stop if validation fails
-    }
-
-    const job = {
+  const handlePostJob = () => {
+    const newJob = {
       title: jobTitle,
       description: jobDescription,
       skills: requiredSkills,
       salary: salary,
+      timestamp: Date.now(), // Store the current timestamp
     };
-    onPostJob(job); // Passing the job details to the parent component
+
+    // Save job to localStorage
+    const existingJobs = JSON.parse(localStorage.getItem("postedJobs")) || [];
+    existingJobs.push(newJob);
+    localStorage.setItem("postedJobs", JSON.stringify(existingJobs));
+
     alert("Job posted successfully!");
+
+    // Clear form fields
+    setJobTitle("");
+    setJobDescription("");
+    setRequiredSkills("");
+    setSalary("");
   };
 
   return (
-    <div className="container mt-5">
-      <div className="section">
-        <h2 className="text-center mb-4">Post Job</h2>
-        <div className="card p-4">
-          <div className="mb-3">
-            <label htmlFor="jobTitle" className="form-label">Job Title:</label>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f0f0f5",
+        padding: "20px",
+      }}
+    >
+      <div
+        className="section"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <div
+          className="card"
+          style={{
+            width: "100%",
+            maxWidth: "800px",
+            padding: "20px",
+            backgroundColor: "#fff",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            borderRadius: "8px",
+          }}
+        >
+          <h2 style={{ textAlign: "center", fontSize: "1.8rem", margin: 0 }}>
+            Post Job
+          </h2>
+          <br />
+          <div className="form-group">
+            <label>Job Title:</label>
             <input
               type="text"
-              id="jobTitle"
               className="form-control"
+              placeholder="Enter job title"
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
-              placeholder="Enter job title"
             />
-            {errors.jobTitle && (
-              <p className="text-danger mt-2">{errors.jobTitle}</p>
-            )}
           </div>
-
-          <div className="mb-3">
-            <label htmlFor="jobDescription" className="form-label">Job Description:</label>
+          <div className="form-group">
+            <label>Job Description:</label>
             <textarea
-              id="jobDescription"
               className="form-control"
-              rows="5"
+              rows="4"
+              placeholder="Enter job description"
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
-              placeholder="Enter job description"
-            />
-            {errors.jobDescription && (
-              <p className="text-danger mt-2">{errors.jobDescription}</p>
-            )}
+            ></textarea>
           </div>
-
-          <div className="mb-3">
-            <label htmlFor="requiredSkills" className="form-label">Required Skills:</label>
+          <div className="form-group">
+            <label>Required Skills:</label>
             <input
               type="text"
-              id="requiredSkills"
               className="form-control"
+              placeholder="Enter required skills"
               value={requiredSkills}
               onChange={(e) => setRequiredSkills(e.target.value)}
-              placeholder="Enter required skills"
             />
-            {errors.requiredSkills && (
-              <p className="text-danger mt-2">{errors.requiredSkills}</p>
-            )}
           </div>
-
-          <div className="mb-3">
-            <label htmlFor="salary" className="form-label">Annual Salary:</label>
+          <div className="form-group">
+            <label>Annual Salary:</label>
             <input
               type="number"
-              id="salary"
               className="form-control"
+              placeholder="Enter salary"
               value={salary}
               onChange={(e) => setSalary(e.target.value)}
-              placeholder="Enter salary"
             />
-            {errors.salary && (
-              <p className="text-danger mt-2">{errors.salary}</p>
-            )}
           </div>
-
-          <div className="text-center">
-            <button className="btn btn-primary" onClick={postJob}>Post Job</button>
-          </div>
+          <button
+            className="btn btn-primary mt-3"
+            onClick={handlePostJob}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#007bff",
+              color: "#fff",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Post Job
+          </button>
         </div>
       </div>
     </div>

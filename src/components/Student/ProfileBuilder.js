@@ -52,6 +52,7 @@ const FormComponent = () => {
       'firstName', 'lastName', 'place', 'dob', 'gender', 'adharNo', 'linkedin',
       'educationStream', 'educationInstitute', 'educationBoard', 'educationAdmissionYear',
       'educationPassingYear', 'educationPercentage', 'projectTitle', 'projectPlatform', 'projectDescription',
+      'Skill', 'certifications', 'hobbies', 'resume'
     ];
 
     requiredFields.forEach(field => {
@@ -68,7 +69,7 @@ const FormComponent = () => {
     }
 
     // LinkedIn Profile: must be a valid URL
-    if (formData.linkedin) {
+    if (formData.linkedin && !/^https?:\/\/(www\.)?linkedin\.com\/.*$/.test(formData.linkedin)) {
       formErrors.linkedin = 'Please enter a valid LinkedIn profile URL';
       formIsValid = false;
     }
@@ -97,7 +98,7 @@ const FormComponent = () => {
   };
 
   return (
-    <div className="section">
+    <div className="section form-container">
       <form onSubmit={handleSubmit}>
         {/* Personal Details */}
         <div className="mb-3">
@@ -182,7 +183,7 @@ const FormComponent = () => {
           {errors.linkedin && <small className="text-danger">{errors.linkedin}</small>}
         </div>
 
-        {/* Education Details */}
+        {/* Educational Details */}
         <div className="mb-3">
           <h3 className="text-center">Educational Details</h3>
           <label htmlFor="educationStream" className="form-label">Stream/Branch</label>
@@ -284,7 +285,7 @@ const FormComponent = () => {
             value={formData.projectDescription}
             onChange={handleInputChange}
             rows="3"
-            placeholder="Describe your project"
+            placeholder="Enter project description"
           ></textarea>
           {errors.projectDescription && <small className="text-danger">{errors.projectDescription}</small>}
 
@@ -300,44 +301,42 @@ const FormComponent = () => {
           {errors.projectLink && <small className="text-danger">{errors.projectLink}</small>}
         </div>
 
-        {/* Skills, Certifications and Hobbies */}
+        {/* Additional Details */}
         <div className="mb-3">
-          <h3 className="text-center">Skills, Certifications and Hobbies</h3>
-
+          <h3 className="text-center">Additional Details</h3>
           <label htmlFor="Skill" className="form-label">Skills</label>
-          <textarea
+          <input
+            type="text"
             className="form-control"
             id="Skill"
             value={formData.Skill}
             onChange={handleInputChange}
-            rows="2"
-            placeholder="Enter your skills with comma separated"
-          ></textarea>
+            placeholder="Enter your skills"
+          />
+          {errors.Skill && <small className="text-danger">{errors.Skill}</small>}
 
           <label htmlFor="certifications" className="form-label">Certifications</label>
-          <textarea
+          <input
+            type="text"
             className="form-control"
             id="certifications"
             value={formData.certifications}
             onChange={handleInputChange}
-            rows="2"
-            placeholder="List your certifications"
-          ></textarea>
+            placeholder="Enter your certifications"
+          />
+          {errors.certifications && <small className="text-danger">{errors.certifications}</small>}
 
           <label htmlFor="hobbies" className="form-label">Hobbies</label>
-          <textarea
+          <input
+            type="text"
             className="form-control"
             id="hobbies"
             value={formData.hobbies}
             onChange={handleInputChange}
-            rows="2"
-            placeholder="List your hobbies"
-          ></textarea>
-        </div>
+            placeholder="Enter your hobbies"
+          />
+          {errors.hobbies && <small className="text-danger">{errors.hobbies}</small>}
 
-        {/* Resume Upload */}
-        <div className="mb-3">
-          <h3 className="text-center">Resume Upload</h3>
           <label htmlFor="resume" className="form-label">Upload Resume</label>
           <input
             type="file"
@@ -345,18 +344,12 @@ const FormComponent = () => {
             id="resume"
             onChange={handleFileChange}
           />
+          {errors.resume && <small className="text-danger">{errors.resume}</small>}
         </div>
 
-        {/* Submit Button */}
-        <div className="d-flex justify-content-between mt-2">
-          <button type="submit" className="btn btn-primary w-auto min-w-100 px-3">Submit</button>
-          <button
-            type="button"
-            className="btn btn-success w-auto min-w-100 px-3 ml-2"
-            onClick={generatePDF}
-          >
-            Generate Resume PDF
-          </button>
+        <div className="text-center">
+          <button type="submit" className="btn btn-primary m-3">Submit</button>
+          <button type="button" className="btn btn-success m-3" onClick={generatePDF}>Generate PDF</button>
         </div>
       </form>
     </div>

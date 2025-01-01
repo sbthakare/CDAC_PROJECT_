@@ -22,10 +22,7 @@ const StudentDashboard = () => {
     }
   };
 
-  const handleSignOut = () => {
-    console.log("User signed out");
-   
-  };
+
 
   return (
     <div className="dashboard d-flex">
@@ -73,9 +70,6 @@ const StudentDashboard = () => {
           </li>
         </ul>
 
-        <button className="btn btn-danger w-auto min-w-100 px-3 ms-4" onClick={handleSignOut}>
-          Sign Out
-        </button>
       </div>
 
       {/* Content */}

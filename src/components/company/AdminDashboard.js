@@ -3,6 +3,8 @@ import PostJob from "./PostJob";
 import WorkTracker from "./WorkTracker";
 import ViewStudents from "./ViewStudents";
 import ViewEmployees from "./ViewEmployees";
+import EmployeeCalendar from "./EmployeeCalendar";
+import AdminJobManagement from "./AdminJobManagement";
 
 
 const AdminDashboard = () => {
@@ -11,6 +13,8 @@ const AdminDashboard = () => {
   const showSection = (sectionId) => {
     setActiveSection(sectionId);
   };
+
+ 
 
   return (
     <div className="dashboard">
@@ -23,6 +27,8 @@ const AdminDashboard = () => {
           <li onClick={() => showSection("workTracker")}>Task Assign</li>
           <li onClick={() => showSection("viewStudents")}>View Students</li>
           <li onClick={() => showSection("viewEmployees")}>Employees Management</li>
+          <li onClick={() => showSection("viewEmployeescal")}>EmployeeCalendar</li>
+          <li onClick={() => showSection("adminjobmanage")}>AdminJobManagement</li>
         </ul>
       </div>
 
@@ -32,6 +38,8 @@ const AdminDashboard = () => {
         {activeSection === "workTracker" && <WorkTracker />}
         {activeSection === "viewStudents" && <ViewStudents />}
         {activeSection === "viewEmployees" && <ViewEmployees />}
+        {activeSection === "viewEmployeescal" && <EmployeeCalendar />}
+        {activeSection === "adminjobmanage" && <AdminJobManagement />}
       </div>
     </div>
   );
