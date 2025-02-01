@@ -66,6 +66,9 @@ const Login = () => {
     } else if (role === "Admin") {
       console.log("Admin Login successful:", formData);
       navigate("/admingpage"); // Redirect to Admin dashboard
+    } else if(role === "Client"){
+       console.log("Client Login successful:", formData);
+       navigate("/clientpage"); // Redirect to Client dashboard
     }
   };
 
@@ -110,6 +113,16 @@ const Login = () => {
                   />
                   Admin
                 </label>
+                <label className="ms-3">
+                  <input
+                    type="radio"  
+                    name="role"
+                    value="Client"
+                    checked={role === "Client"}
+                    onChange={(e) => setRole(e.target.value)}
+                  />
+                  Client
+                </label>
               </div>
             </div>
 
@@ -142,33 +155,33 @@ const Login = () => {
             {/* Error Message */}
             {error && <p style={{ color: "red" }}>{error}</p>}
 
-           {/* Remember Me Checkbox */}
-<div className="remember-forgot">
-  <label>
-    <input
-      type="checkbox"
-      name="rememberMe"
-      checked={formData.rememberMe}
-      onChange={handleChange}
-    />{" "}
-    Remember me
-  </label>
+            {/* Remember Me Checkbox */}
+            <div className="remember-forgot">
+              <label>
+                <input
+                  type="checkbox"
+                  name="rememberMe"
+                  checked={formData.rememberMe}
+                  onChange={handleChange}
+                />{" "}
+                Remember me
+              </label>
 
-  {/* Changed from <a> to <button> */}
-  <button
-    onClick={handleForgetpass}
-    style={{
-      background: "none",
-      border: "none",
-      color: "blue",
-      cursor: "pointer",
-      textDecoration: "underline",
-    }}
-    aria-label="Forgot Password"
-  >
-    Forgot Password
-  </button>
-</div>
+              {/* Changed from <a> to <button> */}
+              <button
+                onClick={handleForgetpass}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "blue",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+                aria-label="Forgot Password"
+              >
+                Forgot Password
+              </button>
+            </div>
 
 
             {/* Submit Button */}

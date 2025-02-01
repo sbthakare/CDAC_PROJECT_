@@ -1,63 +1,78 @@
-// EmployeeTaskTracker.js
-import React, { useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css'; // Make sure to import Bootstrap CSS
+import React, { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const EmployeeTaskTracker = () => {
-  const [tasks, setTasks] = useState([
-    { id: 1, title: "Frontend Development", description: "Complete the homepage UI", status: "Assigned" },
-    { id: 2, title: "Backend Development", description: "Setup API for login", status: "In Progress" },
-    { id: 3, title: "Database Setup", description: "Configure MySQL database", status: "Completed" },
-  ]);
+const TaskTracker = () => {
+  const [tasks, setTasks] = useState([]);
 
-  const updateTaskStatus = (taskId, newStatus) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === taskId ? { ...task, status: newStatus } : task
+  useEffect(() => {
+    const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    setTasks(savedTasks);
+
+    const handleStorageChange = () => {
+      const updatedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      setTasks(updatedTasks);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  const updateTaskStatus = (index, status) => {
+    const updatedTasks = tasks.map((task, i) =>
+      i === index ? { ...task, status } : task
     );
     setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  };
+
+  const clearTasks = () => {
+    localStorage.removeItem("tasks");
+    setTasks([]);
   };
 
   return (
-    <div className="container my-4">
-      <h2 className="text-center mb-4">Employee Task Tracker</h2>
-      
-      {tasks.length === 0 ? (
-        <div className="alert alert-info" role="alert">
-          No tasks assigned yet.
-        </div>
-      ) : (
-        <div className="row">
-          {tasks.map((task) => (
-            <div key={task.id} className="col-md-4 mb-3">
-              <div className="card h-100">
+    <div className="container mt-4">
+      <h2>Task Tracker</h2>
+      <button className="btn btn-danger mb-3" onClick={clearTasks}>
+        Clear Tasks
+      </button>
+      <div className="row">
+        {tasks.length === 0 ? (
+          <p>No tasks assigned yet.</p>
+        ) : (
+          tasks.map((task, index) => (
+            <div className="col-md-4 mb-3" key={index}>
+              <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">{task.title}</h5>
-                  <p className="card-text"><strong>Description:</strong> {task.description}</p>
-                  <p className="card-text"><strong>Status:</strong> {task.status}</p>
-
+                  <h5 className="card-title">{task.employee}</h5>
+                  <p className="card-text">{task.details}</p>
+                  <p className="card-text">
+                    <strong>Status:</strong> {task.status || "Not Started"}
+                  </p>
                   {task.status !== "Completed" && (
-                    <button
-                      className="btn btn-warning w-100 mb-2"
-                      onClick={() => updateTaskStatus(task.id, "In Progress")}
-                    >
-                      Mark as In Progress
-                    </button>
-                  )}
-                  {task.status !== "Completed" && (
-                    <button
-                      className="btn btn-success w-100"
-                      onClick={() => updateTaskStatus(task.id, "Completed")}
-                    >
-                      Mark as Completed
-                    </button>
+                    <>
+                      <button
+                        className="btn btn-warning me-2"
+                        onClick={() => updateTaskStatus(index, "In Progress")}
+                      >
+                        In Progress
+                      </button>
+                      <button
+                        className="btn btn-success"
+                        onClick={() => updateTaskStatus(index, "Completed")}
+                      >
+                        Completed
+                      </button>
+                    </>
                   )}
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 };
 
-export default EmployeeTaskTracker;
+export default TaskTracker;

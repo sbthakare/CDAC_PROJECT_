@@ -1,42 +1,44 @@
-// src/components/Employee/EmployeeScheduler.js
 import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import dayGridPlugin from "@fullcalendar/daygrid"; // For month/day view
+import timeGridPlugin from "@fullcalendar/timegrid"; // For scheduling
+import interactionPlugin from "@fullcalendar/interaction"; // For event handling
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const schedule = () => {
+const EmployeeScheduler = ({ assignedTasks }) => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    const storedEvents = JSON.parse(localStorage.getItem("events")) || [];
-    setEvents(storedEvents);
-  }, []);
+    // Initialize the employee's calendar with the assigned tasks
+    if (assignedTasks && Array.isArray(assignedTasks)) {
+      const taskEvents = assignedTasks.map((task) => ({
+        title: `${task.title} - ${task.employee}`,
+        start: task.start,
+        description: task.description || "",
+        allDay: true,
+      }));
+      setEvents(taskEvents);
+    }
+  }, [assignedTasks]);
 
   const handleDateClick = (info) => {
     const title = prompt("Enter Meeting Title");
     if (title) {
-      const newEvent = {
-        title: `Meeting: ${title}`,
-        start: info.dateStr,
-        allDay: true,
-      };
-
-      setEvents((prevEvents) => [...prevEvents, newEvent]);
-
-      // Save the new event to localStorage for persistence
-      const existingEvents = JSON.parse(localStorage.getItem("events")) || [];
-      existingEvents.push(newEvent);
-      localStorage.setItem("events", JSON.stringify(existingEvents));
-
+      setEvents((prevEvents) => [
+        ...prevEvents,
+        {
+          title: `Meeting: ${title}`,
+          start: info.dateStr,
+          allDay: true,
+        },
+      ]);
       alert("Meeting scheduled successfully!");
     }
   };
 
   return (
     <div className="container mt-5">
-      <h4>Your Schedule</h4>
+      <h4>Calendar</h4>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -49,4 +51,4 @@ const schedule = () => {
   );
 };
 
-export default schedule;
+export default EmployeeScheduler;

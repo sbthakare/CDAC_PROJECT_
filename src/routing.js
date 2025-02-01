@@ -1,5 +1,4 @@
 import React from "react";
-
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 
@@ -12,14 +11,9 @@ import StudentDashboard from "./components/Student/StudentDashboard";
 import ForgetPassword from "./components/ForgetPassword";
 import AdminDashboard from "./components/company/AdminDashboard";
 import EmployeeDashboard from "./components/Employee/EmployeeDashboard";
-import About from "./About ";
-import Contact from "./Contact";
-import JobDetails from "./JobDetails";
-
-
-
-
-const router = createBrowserRouter([
+import ClientDashboard from "./components/Client/ClientDashboard";
+// Routes with Header and Footer
+const appRoutes = [
   {
     path: "/",
     element: <App />,
@@ -37,46 +31,45 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "aboutpage",
-        element: <About />,
-      },
-      {
-        path: "contactpage",
-        element: <Contact />,
-      },
-      
-      {
         path: "loginpage",
         element: <Login />,
       },
-      
       {
         path: "registerpage",
         element: <Register />,
       },
       {
         path: "forgotpasswordpage",
-        element: <ForgetPassword/>,
+        element: <ForgetPassword />,
       },
-      {
-        path: "jobdetails",
-        element: <JobDetails/>,
-      },
-      {
-        path: "studentpage",
-        element: <StudentDashboard/>,
-      },
-      {
-        path: "admingpage",
-        element: <AdminDashboard/>,
-      },
-      {
-        path: "employeepage",
-        element: <EmployeeDashboard/>,
-      },
- 
     ],
   },
+];
+
+// Routes without Header and Footer
+const dashboardRoutes = [
+  {
+    path: "studentpage",
+    element: <StudentDashboard />,
+  },
+  {
+    path: "admingpage",
+    element: <AdminDashboard />,
+  },
+  {
+    path: "employeepage",
+    element: <EmployeeDashboard />,
+  },
+  {
+    path: "clientpage",
+    element: <ClientDashboard />,
+  }
+];
+
+// Combine both route groups
+const router = createBrowserRouter([
+  ...appRoutes,
+  ...dashboardRoutes,
 ]);
 
 export default router;

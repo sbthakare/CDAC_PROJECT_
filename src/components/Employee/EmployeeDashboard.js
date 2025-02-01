@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import Profile from "./Profile";
 import TaskTracker from "./TaskTracker";
-import { GrSchedule } from "react-icons/gr";
+import Calendar from "./schedule";
+import Schedule from "./Calender";
+import Feedback from "./Feedback";
 
 const EmployeeDashboard = () => {
   const [activeSection, setActiveSection] = useState("profile");
@@ -11,6 +13,12 @@ const EmployeeDashboard = () => {
     position: "",
   });
 
+  const logout = () => {
+    localStorage.clear();
+    alert("You have been logged out!");
+    window.location.href = "/loginpage";
+  };
+
   const handleProfileChange = (e) => {
     const { name, value } = e.target;
     setProfile({ ...profile, [name]: value });
@@ -19,7 +27,9 @@ const EmployeeDashboard = () => {
   const saveProfile = () => {
     const { name, email, position } = profile;
     if (name && email && position) {
-      alert(`Profile saved:\nName: ${name}\nEmail: ${email}\nPosition: ${position}`);
+      alert(
+        `Profile saved:\nName: ${name}\nEmail: ${email}\nPosition: ${position}`
+      );
     } else {
       alert("Please fill out all fields.");
     }
@@ -28,7 +38,7 @@ const EmployeeDashboard = () => {
   return (
     <div className="dashboard">
       {/* Sidebar */}
-      <div className="sidebar">
+      <div className="sidebar bg-dark text-light p-3" style={{ width: "250px", height: "100vh" }}>
         <h3>Employee Dashboard</h3>
         <ul>
           <li
@@ -44,12 +54,27 @@ const EmployeeDashboard = () => {
             Task Tracker
           </li>
           <li
+            className={activeSection === "calendar" ? "active" : ""}
+            onClick={() => setActiveSection("calendar")}
+          >
+            Calendar
+          </li>
+          <li
             className={activeSection === "schedule" ? "active" : ""}
             onClick={() => setActiveSection("schedule")}
           >
-            schedule
+            Schedule
+          </li>
+          <li
+            className={activeSection === "feedback" ? "active" : ""}
+            onClick={() => setActiveSection("feedback")}
+          >
+            Feedback
           </li>
         </ul>
+        <button className="btn btn-secondary logout-button" onClick={logout}>
+          Logout
+        </button>
       </div>
 
       {/* Content Area */}
@@ -62,7 +87,9 @@ const EmployeeDashboard = () => {
           />
         )}
         {activeSection === "taskTracker" && <TaskTracker />}
-        {activeSection === "schedule" && <GrSchedule />}
+        {activeSection === "calendar" && <Calendar />}
+        {activeSection === "schedule" && <Schedule />}
+        {activeSection === "feedback" && <Feedback />}
       </div>
     </div>
   );
